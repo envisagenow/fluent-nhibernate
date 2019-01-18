@@ -1,14 +1,14 @@
 using System.Linq;
+using FakeItEasy;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Diagnostics;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures;
-using FluentNHibernate.Testing.Utils;
 using NHibernate.Cfg;
 using NUnit.Framework;
+using static FluentNHibernate.Testing.Cfg.SQLiteFrameworkConfigurationFactory;
 
 namespace FluentNHibernate.Testing.Cfg
 {
@@ -22,11 +22,10 @@ namespace FluentNHibernate.Testing.Cfg
         [SetUp]
         public void CreateMappingConfiguration()
         {
-            logger = Stub<IDiagnosticLogger>.Create();
+            logger = A.Fake<IDiagnosticLogger>();
             cfg = new Configuration();
 
-            SQLiteConfiguration.Standard
-                .InMemory()
+            CreateStandardInMemoryConfiguration()
                 .ConfigureProperties(cfg);
 
             mapping = new MappingConfiguration(logger);
@@ -174,11 +173,11 @@ namespace FluentNHibernate.Testing.Cfg
         public void MergeOutputShouldSetFlagOnFluentPersistenceModelsOnApply()
         {
             var model = new PersistenceModel();
-            
+
             mapping.UsePersistenceModel(model);
             mapping.MergeMappings();
             mapping.Apply(new Configuration());
-            
+
             model.MergeMappings.ShouldBeTrue();
         }
     }

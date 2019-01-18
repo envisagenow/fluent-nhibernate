@@ -14,6 +14,12 @@ namespace FluentNHibernate.Testing.Cfg
         }
 
         [Test]
+        public void DB2_should_include_informix_dialect()
+        {
+            DB2Configuration.Informix1150.ToProperties()["dialect"].ShouldEqual("NHibernate.Dialect.InformixDialect1000, " + typeof(ISession).Assembly.FullName);
+        }
+
+        [Test]
         public void DB2_driver_should_default_to_the_DB2_ClientDriver()
         {
             DB2Configuration.Standard.ToProperties()["connection.driver_class"].ShouldEqual("NHibernate.Driver.DB2Driver, " + typeof(ISession).Assembly.FullName);
@@ -40,6 +46,7 @@ namespace FluentNHibernate.Testing.Cfg
                 .ToProperties().ShouldContain("connection.connection_string", "value");
         }
 
+#if NETFX
         [Test]
         public void ConnectionStringSetFromAppSetting()
         {
@@ -48,7 +55,9 @@ namespace FluentNHibernate.Testing.Cfg
                     .FromAppSetting("connectionString"))
                 .ToProperties().ShouldContain("connection.connection_string", "a-connection-string");
         }
+#endif
 
+#if NETFX
         [Test]
         public void ConnectionStringSetFromConnectionStrings()
         {
@@ -57,6 +66,7 @@ namespace FluentNHibernate.Testing.Cfg
                     .FromConnectionStringWithKey("main"))
                 .ToProperties().ShouldContain("connection.connection_string", "connection string");
         }
+#endif
 
         [Test]
         public void ShouldBeAbleToSpecifyConnectionStringDirectly()

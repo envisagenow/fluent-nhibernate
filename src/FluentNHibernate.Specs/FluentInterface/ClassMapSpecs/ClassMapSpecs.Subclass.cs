@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using FluentNHibernate.Mapping;
 using FluentNHibernate.MappingModel.ClassBased;
 using FluentNHibernate.Specs.FluentInterface.Fixtures;
 using Machine.Specifications;
+using FluentAssertions;
 
 namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
 {
@@ -16,7 +18,7 @@ namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
 #pragma warning restore 612,618
 
         It should_add_subclass_to_class_mapping_subclasses_collection = () =>
-            class_mapping.Subclasses.Count().ShouldEqual(1);
+            class_mapping.Subclasses.Count().Should().Be(1);
 
         static ClassMapping class_mapping;
     }
@@ -32,13 +34,13 @@ namespace FluentNHibernate.Specs.FluentInterface.ClassMapSpecs
 #pragma warning restore 612,618
 
         It should_add_joined_subclass_to_class_mapping_subclasses_collection = () =>
-            class_mapping.Subclasses.Count().ShouldEqual(1);
+            class_mapping.Subclasses.Count().Should().Be(1);
 
         It should_create_a_key_for_the_subclass = () =>
-            class_mapping.Subclasses.First().Key.ShouldNotBeNull();
+            class_mapping.Subclasses.First().Key.Should().NotBeNull();
 
         It should_create_a_column_for_the_key_with_the_name_specified = () =>
-            class_mapping.Subclasses.First().Key.Columns.Single().Name.ShouldEqual("key");
+            class_mapping.Subclasses.First().Key.Columns.Single().Name.Should().Be("key");
 
         static ClassMapping class_mapping;
     }
